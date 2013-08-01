@@ -1,13 +1,12 @@
 ColorCraze::Application.routes.draw do
-  get "static_pages/home"
+  get "users/new"
 
-  get "static_pages/services"
+  root to: 'static_pages#home'
 
-  get "static_pages/customers"
-
-  get "static_pages/about"
-
-  get "static_pages/contact"
+  match '/services',      to: 'static_pages#services'
+  match '/customers',     to: 'static_pages#customers'
+  match '/about',         to: 'static_pages#about'
+  match '/contact',       to: 'static_pages#contact'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
