@@ -1,8 +1,9 @@
 ColorCraze::Application.routes.draw do
-  get "users/new"
+  resources :users
 
   root to: 'static_pages#home'
 
+  match '/signup',        to: 'users#new',              via: 'get'
   match '/services',      to: 'static_pages#services'
   match '/customers',     to: 'static_pages#customers'
   match '/about',         to: 'static_pages#about'

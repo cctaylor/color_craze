@@ -8,6 +8,50 @@ describe "User pages" do
     before { visit signup_path }
 
     it { should have_selector('h1',    text: 'Sign up') }
-    it { should have_selector('title', text: full_title('Sign up')) }
+    it { should have_selector('title', text: 'Sign up') }
+  end
+
+  describe "profile page" do
+    let(:user) { FactoryGirl.create(:user) }
+  	before { visit user_path(user) }
+
+  	it { should have_selector('h1',		text: user.last_name) }
+  	it { should have_selector('title',	text: user.last_name) }
+  end
+
+  describe "signup" do
+
+    before { visit signup_path }
+
+    let(:submit) { "Create my account" }
+
+    describe "with invalid information" do
+      it "should not create a user" do
+        expect { click_button submit }.not_to change(User, :count)
+      end
+    end
+
+    describe "with valid information" do
+      before do
+        fill_in "First name",   with: "Example"
+        fill_in "Last name",    with: "User"
+        fill_in "Email",        with: "user@example.com"
+        fill_in "Company",      with: "My Company"
+        fill_in "Street 1",  with: "19 Dogwood Dr."
+        fill_in "Street 2",  with: "Apt 32J"
+        fill_in "City",          with: "Dallas"
+        fill_in "State",         with: "TX"
+        fill_in "Zip",           with: "07436"
+        fill_in "Country",       with: "USA"
+        fill_in "Phone o",  with: "972-377-5838"
+        fill_in "Phone m",  with: "201-644-8017"
+        fill_in "Password",     with: "foobar"
+        fill_in "Password confirmation", with: "foobar"
+      end
+
+      it "should create a user" do
+        expect { click_button submit }.to change(User, :count).by(1)
+      end
+    end
   end
 end
