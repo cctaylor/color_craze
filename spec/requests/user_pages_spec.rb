@@ -37,20 +37,29 @@ describe "User pages" do
         fill_in "Last name",    with: "User"
         fill_in "Email",        with: "user@example.com"
         fill_in "Company",      with: "My Company"
-        fill_in "Street 1",  with: "19 Dogwood Dr."
-        fill_in "Street 2",  with: "Apt 32J"
-        fill_in "City",          with: "Dallas"
-        fill_in "State",         with: "TX"
-        fill_in "Zip",           with: "07436"
-        fill_in "Country",       with: "USA"
-        fill_in "Phone o",  with: "972-377-5838"
-        fill_in "Phone m",  with: "201-644-8017"
+        fill_in "Street 1",     with: "19 Dogwood Dr."
+        fill_in "Street 2",     with: "Apt 32J"
+        fill_in "City",         with: "Dallas"
+        fill_in "State",        with: "TX"
+        fill_in "Zip",          with: "07436"
+        fill_in "Country",      with: "USA"
+        fill_in "Phone o",      with: "972-377-5838"
+        fill_in "Phone m",      with: "201-644-8017"
         fill_in "Password",     with: "foobar"
         fill_in "Password confirmation", with: "foobar"
       end
 
       it "should create a user" do
         expect { click_button submit }.to change(User, :count).by(1)
+      end
+
+      describe "after saving the user" do
+        before { click_button submit }
+        let(:user) { User.find_by_email('user@example.com') }
+
+        it { should have_selector('title', text: user.last_name) }
+        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out') }
       end
     end
   end
