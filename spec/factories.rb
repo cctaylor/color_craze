@@ -1,8 +1,8 @@
 FactoryGirl.define do
 	factory :user do
-		first_name	"Chris"
-		last_name	"Taylor"
-		email		"cctaylor@gmail.com"
+		sequence(:last_name)	{ |n| "Person #{n}" }
+		first_name	"User"
+		sequence(:email)		{ |n| "person_#{n}@example.com" }
 		password	"foobar"
 		password_confirmation "foobar"
 		street_1	"96 Forestdale Rd."
@@ -13,5 +13,9 @@ FactoryGirl.define do
 		zip 		"11570"
 		phone_o		"646-840-7146"
 		phone_m		"917-207-3240"
+
+		factory :admin do
+			admin true
+		end
 	end
 end
