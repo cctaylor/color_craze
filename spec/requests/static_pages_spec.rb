@@ -6,15 +6,14 @@ describe "StaticPages" do
   let(:base_title) { "Color Craze" }
 
   describe "Home page" do
+    before { visit root_path }
 
-    it "should have the h1 'Sample App'" do
-      visit '/static_pages/home'
-      page.should have_selector('h1', :text => 'Home')
+    it "should have the h1 'Welcome to Color Craze'" do
+      page.should have_selector('h1', text: 'Welcome to Color Craze')
     end
 
     it "should have the title 'Home'" do
-      visit '/static_pages/home'
-      page.should have_selector('title', :text => "#{base_title} | Home")
+      page.should have_selector('title', text: 'full-service')
     end
 
     describe "for signed-in users" do
@@ -31,21 +30,29 @@ describe "StaticPages" do
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end
+
+      describe "follower/following counts" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          other_user.follow!(user)
+          visit root_path
+        end
+
+        it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("1 followers", href: followers_user_path(user)) }
+      end
     end
   end
 
   describe "Services page" do
+    before { visit services_path }
 
     it "should have the h1 'Services'" do
-      visit '/static_pages/services'
-      page.should have_selector('h1', :text => 'Services')
+      page.should have_selector('h1', text: 'Services')
     end
 
     it "should have the title 'Services'" do
-      visit '/static_pages/services'
-      page.should have_selector('title', :text => "#{base_title} | Services")
+      page.should have_selector('title', text: 'Services')
     end
   end
-
-
 end
